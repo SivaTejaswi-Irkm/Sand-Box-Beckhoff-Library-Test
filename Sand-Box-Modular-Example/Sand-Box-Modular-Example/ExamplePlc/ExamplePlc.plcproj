@@ -23,6 +23,10 @@
       <DefaultResolution>Sensata_Common, * (Sensata Technologies)</DefaultResolution>
       <Namespace>Sensata_Common</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="Sensata_PressureTransducers">
+      <DefaultResolution>Sensata_PressureTransducers, * (Sensata Technologies)</DefaultResolution>
+      <Namespace>Sensata_PressureTransducers</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Sensata_Utilities">
       <DefaultResolution>Sensata_Utilities, * (Sensata Technologies)</DefaultResolution>
       <Namespace>Sensata_Utilities</Namespace>
@@ -77,6 +81,9 @@
     <PlaceholderResolution Include="Sensata_Common">
       <Resolution>Sensata_Common, * (Sensata Technologies)</Resolution>
     </PlaceholderResolution>
+    <PlaceholderResolution Include="Sensata_PressureTransducers">
+      <Resolution>Sensata_PressureTransducers, * (Sensata Technologies)</Resolution>
+    </PlaceholderResolution>
     <PlaceholderResolution Include="Standard">
       <Resolution>Tc2_Standard, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
@@ -98,11 +105,6 @@
     <PlaceholderResolution Include="UML State Chart Types">
       <Resolution>UML Statechart Types, * (3S - Smart Software Solutions GmbH)</Resolution>
     </PlaceholderResolution>
-  </ItemGroup>
-  <ItemGroup>
-    <LibraryReference Include="Sensata_LaserMarker,newest,Sensata Technologies">
-      <Namespace>Sensata_LaserMarker</Namespace>
-    </LibraryReference>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
