@@ -3,273 +3,356 @@
   <POU Name="PRG_Main" Id="{b13f0be3-4c97-4edc-94e2-8c6f67cb8665}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Main
 VAR
-	bTestInput: BOOL;
-	bTestOutput: BOOL;
-	fbMachine: FB_ExampleMachine;
-	fbStation1: FB_ExampleStation;
-	fbStation2: FB_ExampleStation;
-	fbStation3: FB_ExampleStation;
-	fbStation4: FB_ExampleStation;
-	bStart: BOOL;
-	bAbort: BOOL;
-	bReset: BOOL;
-	bStop: BOOL;
-	bSuspend: BOOL;
-	fbDevice1: FB_ExampleDevice;
-	fbDevice2: FB_ExampleDevice;
-	fbDevice3: FB_ExampleDevice;
-	fbDevice4: FB_ExampleDevice;
-	bPoweredOn: BOOL;
-//	FB_AdsDeviceAPI_0: FB_AdsDeviceAPI;
-	FB_AdsDeviceAPI_0 : FB_AdsCommandRouter;
-	bConnectToAlicatAbs: BOOL;
-	bRes_AlicatAbsConnected: BOOL;
-	bTestADSServer: BOOL;
-	strTarget: T_MaxString;
-	strCommand: T_MaxString;
-	arrParams: T_ApiMethodParameters;
-	MyResults: T_MaxString;
-	bInterfaceTest : BOOL;
-	bDisconnectFromAlicatAbs: BOOL;
-	bRes_AlicatAbsDisConnected: BOOL;
-	bGetPressure: BOOL;
-	bGetPressureSuccessful: BOOL;
-	bGetAlicatData: BOOL;
-	bGetAlicatDataSuccessful: BOOL;
-	bLockDisplay: BOOL;
-	bLockDisplaySuccessful: BOOL;
-	bUnlockDisplay: BOOL;
-	bUnlockDisplaySuccessful: BOOL;
-	AlicatAbsolutePressureTransducer_1: FB_AbsolutePressureTransducer;
+	//ADS
+	FB_AdsDeviceAPI_1 : FB_AdsCommandRouter;
+	FB_AdsDeviceAPI_2 : FB_AdsCommandRouter;
+	FB_AdsDeviceAPI_3 : FB_AdsCommandRouter;
+	
+	//FlowMeter
+	AlicatFlowMeter_1: FB_AlicatFlowMeter;
+	bConnectToAlicatFlow1: BOOL;
+	bRes_AlicatFlowConnected1: BOOL;
+	bGetPressureFlow1: BOOL;
+	bGetPressureSuccessfulFlow1: BOOL;
+	bGetAlicatDataFlow1: BOOL;
+	bGetAlicatDataSuccessfulFlow1: BOOL;
+	bLockDisplayFlow1: BOOL;
+	bLockDisplaySuccessfulFlow1: BOOL;
+	bUnlockDisplayFlow1: BOOL;
+	bUnlockDisplaySuccessfulFlow1: BOOL;
+	bDisconnectFromAlicatFlow1: BOOL;
+	bRes_AlicatFlowDisConnected1: BOOL;
+	
+	AlicatFlowMeter_2 : FB_AlicatFlowMeter;
+	AlicatFlowMeter_3 : FB_AlicatFlowMeter;
+	AlicatFlowMeter_4 : FB_AlicatFlowMeter;
+	
+	AlicatAbs_1 : FB_AlicatAbsolute;
+	bConnectToAlicatAbs1: BOOL;
+	bRes_AlicatAbsConnected1: BOOL;
+	bGetPressureAbs1: BOOL;
+	bGetPressureSuccessfulAbs1: BOOL;
+	bGetAlicatDataAbs1: BOOL;
+	bGetAlicatDataSuccessfulAbs1: BOOL;
+	bLockDisplayAbs1: BOOL;
+	bLockDisplaySuccessfulAbs1: BOOL;
+	bUnlockDisplayAbs1: BOOL;
+	bUnlockDisplaySuccessfulAbs1: BOOL;
+	bDisconnectFromAlicatAbs1: BOOL;
+	bRes_AlicatAbsDisConnected1: BOOL;
+	
+	AlicatAbs_2 : FB_AlicatAbsolute;
+
+	AlicatDiff_1 : FB_AlicatDifferential;
+	bConnectToAlicatDiff1: BOOL;
+	bRes_AlicatDiffConnected1: BOOL;
+	bGetPressureDiff1: BOOL;
+	bGetPressureSuccessfulDiff1: BOOL;
+	bGetAlicatDataDiff1: BOOL;
+	bGetAlicatDataSuccessfulDiff1: BOOL;
+	bLockDisplayDiff1: BOOL;
+	bLockDisplaySuccessfulDiff1: BOOL;
+	bUnlockDisplayDiff1: BOOL;
+	bUnlockDisplaySuccessfulDiff1: BOOL;
+	bDisconnectFromAlicatDiff1: BOOL;
+	bRes_AlicatDiffDisConnected1: BOOL;
+	
+	AlicatDiff_2 : FB_AlicatDifferential;
+	AlicatDiff_3 : FB_AlicatDifferential;
+	AlicatDiff_4 : FB_AlicatDifferential;
+
+	//Agilent Vacuum Gauge		
+	AgilentVacuum_1 : FB_AgilentVacuumGauge;
+	bConnectToAgilentVac: BOOL;
+	bRes_AgilentVacConnected: BOOL;
+	bGetPressureAgilent: BOOL;
+	bGetPressureSuccessfulAgilent: BOOL;
+	bDisconnectFromAgilent: BOOL;
+	bRes_AgilentDisConnected: BOOL;
+	
+	//Alicat Flow Meter Return Variables
+	AlicatFlowMeterPressure : LREAL; //M_GetPressure
+	AlicatFlowDataPressure  : LREAL; //M_GetAlicatFlowData
+	AlicatFlowDataTotFlow   : LREAL;
+	AlicatFlowMassFlowRate  : LREAL;
+	AlicatFlowVolFlowRate   : LREAL;
+	
+	//AlicatAbs Return Values
+	AlicatAbsPressure : LREAL;
+	
+	//AlicatDiff Return Values
+	AlicatDiffPressure : LREAL;
+	
+	//Agilent Return Values
+	AgilentPressure : LREAL;
+	
+	
+	
+	
+	
+	
+	
+	
+	//	bTestInput: BOOL;
+//	bTestOutput: BOOL;
+//	fbMachine: FB_ExampleMachine;
+//	fbStation1: FB_ExampleStation;
+//	fbStation2: FB_ExampleStation;
+//	fbStation3: FB_ExampleStation;
+//	fbStation4: FB_ExampleStation;
+//	bStart: BOOL;
+//	bAbort: BOOL;
+//	bReset: BOOL;
+//	bStop: BOOL;
+//	bSuspend: BOOL;
+//	fbDevice1: FB_ExampleDevice;
+//	fbDevice2: FB_ExampleDevice;
+//	fbDevice3: FB_ExampleDevice;
+//	fbDevice4: FB_ExampleDevice;
+//	bPoweredOn: BOOL;	
+//	bTestADSServer: BOOL;
+//	strTarget: T_MaxString;
+//	strCommand: T_MaxString;
+//	arrParams: T_ApiMethodParameters;
+//	MyResults: T_MaxString;
+//	bInterfaceTest : BOOL;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[bTestOutput := bTestInput;
+      <ST><![CDATA[A_Machine();
 
-A_Machine();
-//A_Station1();
-//A_Station2();
-//A_Station3();
-//A_Station4();
-//bInterfaceTest := MyLaser1.fbApi.P_bDeviceInterfaceBusy;
-
-
-
-IF bConnectToAlicatAbs THEN
-	bRes_AlicatAbsConnected := AlicatAbsolutePressureTransducer_1.M_Connect();
-	IF bRes_AlicatAbsConnected THEN
-		bConnectToAlicatAbs := FALSE;
-	ELSIF AlicatAbsolutePressureTransducer_1.P_bError THEN
-		bConnectToAlicatAbs := FALSE;
-		AlicatAbsolutePressureTransducer_1.M_ClearError();
+//Alicat Flow Meter 1
+IF bConnectToAlicatFlow1 THEN
+	bRes_AlicatFlowConnected1 := AlicatFlowMeter_1.M_Connect();
+	IF 	bRes_AlicatFlowConnected1 THEN
+		bConnectToAlicatFlow1 := FALSE;
+	ELSIF AlicatFlowMeter_1.P_bError THEN
+		bConnectToAlicatFlow1 := FALSE;
+		AlicatFlowMeter_1.M_ClearError();
 	END_IF
 END_IF
 
-IF bDisconnectFromAlicatAbs THEN
-	bRes_AlicatAbsDisConnected := AlicatAbsolutePressureTransducer_1.M_Disconnect();
-	IF bRes_AlicatAbsConnected THEN
-		bDisconnectFromAlicatAbs := FALSE;
-	ELSIF AlicatAbsolutePressureTransducer_1.P_bError THEN
-		bDisconnectFromAlicatAbs := FALSE;
-		AlicatAbsolutePressureTransducer_1.M_ClearError();
+IF bGetAlicatDataFlow1 THEN
+	bGetAlicatDataSuccessfulFlow1 := AlicatFlowMeter_1.M_GetAlicatFlowData(_out_lrealPressure=>AlicatFlowDataPressure,
+																			 _out_lrealTotFlow=>AlicatFlowDataTotFlow,
+																			 _out_lrealMassFlowRate=>AlicatFlowMassFlowRate,
+																			 _out_lrealVolFlowRate=>AlicatFlowVolFlowRate);
+	IF bGetAlicatDataSuccessfulFlow1 THEN
+		bGetAlicatDataFlow1 := FALSE;
+	ELSIF AlicatFlowMeter_1.P_bError THEN
+		bGetAlicatDataFlow1 := FALSE;
+		AlicatFlowMeter_1.M_ClearError();
 	END_IF
 END_IF
 
-IF bGetPressure THEN
-	bGetPressureSuccessful := AlicatAbsolutePressureTransducer_1.M_GetPressure();
-	IF bGetPressureSuccessful THEN
-		bGetPressure := FALSE;
-	ELSIF AlicatAbsolutePressureTransducer_1.P_bError THEN
-		bGetPressure := FALSE;
-		AlicatAbsolutePressureTransducer_1.M_ClearError();
+IF bDisconnectFromAlicatFlow1 THEN
+	bRes_AlicatFlowDisConnected1 := AlicatFlowMeter_1.M_Disconnect();
+	IF bRes_AlicatFlowDisConnected1 THEN
+		bDisconnectFromAlicatFlow1 := FALSE;
+	ELSIF AlicatFlowMeter_1.P_bError THEN
+		bDisconnectFromAlicatFlow1 := FALSE;
+		AlicatFlowMeter_1.M_ClearError();
 	END_IF
 END_IF
 
-IF bGetAlicatData THEN
-	bGetAlicatDataSuccessful := AlicatAbsolutePressureTransducer_1.M_GetAlicatData();
-	IF bGetAlicatDataSuccessful THEN
-		bGetAlicatData := FALSE;
-	ELSIF AlicatAbsolutePressureTransducer_1.P_bError THEN
-		bGetAlicatData := FALSE;
-		AlicatAbsolutePressureTransducer_1.M_ClearError();
+IF bGetPressureFlow1 THEN
+	bGetPressureSuccessfulFlow1 := AlicatFlowMeter_1.M_GetPressure(_out_lrealPressure => AlicatFlowMeterPressure);
+	IF bGetPressureSuccessfulFlow1 THEN		
+		bGetPressureFlow1 := FALSE;
+	ELSIF AlicatFlowMeter_1.P_bError THEN
+		bGetPressureFlow1 := FALSE;
+		AlicatFlowMeter_1.M_ClearError();
 	END_IF
 END_IF
 
-IF bLockDisplay THEN
-	bLockDisplaySuccessful := AlicatAbsolutePressureTransducer_1.M_LockDisplay();
-	IF bLockDisplaySuccessful THEN
-		bLockDisplay := FALSE;
-	ELSIF AlicatAbsolutePressureTransducer_1.P_bError THEN
-		bLockDisplay := FALSE;
-		AlicatAbsolutePressureTransducer_1.M_ClearError();
+IF bLockDisplayFlow1 THEN
+	bLockDisplaySuccessfulFlow1 := AlicatFlowMeter_1.M_LockDisplay();
+	IF bLockDisplaySuccessfulFlow1 THEN
+		bLockDisplayFlow1 := FALSE;
+	ELSIF AlicatFlowMeter_1.P_bError THEN
+		bLockDisplayFlow1 := FALSE;
+		AlicatFlowMeter_1.M_ClearError();
 	END_IF
 END_IF
 
-IF bUnlockDisplay THEN
-	bUnlockDisplaySuccessful := AlicatAbsolutePressureTransducer_1.M_UnlockDisplay();
-	IF bUnlockDisplaySuccessful THEN
-		bUnlockDisplay := FALSE;
-	ELSIF AlicatAbsolutePressureTransducer_1.P_bError THEN
-		bUnlockDisplay := FALSE;
-		AlicatAbsolutePressureTransducer_1.M_ClearError();
+IF bUnlockDisplayFlow1 THEN
+	bUnlockDisplaySuccessfulFlow1 := AlicatFlowMeter_1.M_UnlockDisplay();
+	IF bUnlockDisplaySuccessfulFlow1 THEN
+		bUnlockDisplayFlow1 := FALSE;
+	ELSIF AlicatFlowMeter_1.P_bError THEN
+		bUnlockDisplayFlow1 := FALSE;
+		AlicatFlowMeter_1.M_ClearError();
+	END_IF
+END_IF
+
+//Alicat Absolute 1
+
+IF bConnectToAlicatAbs1 THEN
+	bRes_AlicatAbsConnected1 := AlicatAbs_1.M_Connect();
+	IF 	bRes_AlicatAbsConnected1 THEN
+		bConnectToAlicatAbs1 := FALSE;
+	ELSIF AlicatAbs_1.P_bError THEN
+		bConnectToAlicatAbs1 := FALSE;
+		AlicatAbs_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bGetAlicatDataAbs1 THEN
+	bGetAlicatDataSuccessfulAbs1 := AlicatAbs_1.M_GetAlicatAbsData();
+	IF bGetAlicatDataSuccessfulAbs1 THEN
+		bGetAlicatDataAbs1 := FALSE;
+	ELSIF AlicatAbs_1.P_bError THEN
+		bGetAlicatDataAbs1 := FALSE;
+		AlicatAbs_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bDisconnectFromAlicatAbs1 THEN
+	bRes_AlicatAbsDisConnected1 := AlicatAbs_1.M_Disconnect();
+	IF bRes_AlicatAbsDisConnected1 THEN
+		bDisconnectFromAlicatAbs1 := FALSE;
+	ELSIF AlicatAbs_1.P_bError THEN
+		bDisconnectFromAlicatAbs1 := FALSE;
+		AlicatAbs_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bGetPressureAbs1 THEN
+	bGetPressureSuccessfulAbs1 := AlicatAbs_1.M_GetPressure(_out_lrealPressure=>AlicatAbsPressure);
+	IF bGetPressureSuccessfulAbs1 THEN
+		bGetPressureAbs1 := FALSE;
+	ELSIF AlicatAbs_1.P_bError THEN
+		bGetPressureAbs1 := FALSE;
+		AlicatAbs_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bLockDisplayAbs1 THEN
+	bLockDisplaySuccessfulAbs1 := AlicatAbs_1.M_LockDisplay();
+	IF bLockDisplaySuccessfulAbs1 THEN
+		bLockDisplayAbs1 := FALSE;
+	ELSIF AlicatAbs_1.P_bError THEN
+		bLockDisplayAbs1 := FALSE;
+		AlicatAbs_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bUnlockDisplayAbs1 THEN
+	bUnlockDisplaySuccessfulAbs1 := AlicatAbs_1.M_UnlockDisplay();
+	IF bUnlockDisplaySuccessfulAbs1 THEN
+		bUnlockDisplayAbs1 := FALSE;
+	ELSIF AlicatAbs_1.P_bError THEN
+		bUnlockDisplayAbs1 := FALSE;
+		AlicatAbs_1.M_ClearError();
+	END_IF
+END_IF
+
+//Alicat Differential 1
+
+IF bConnectToAlicatDiff1 THEN
+	bRes_AlicatDiffConnected1 := AlicatDiff_1.M_Connect();
+	IF 	bRes_AlicatDiffConnected1 THEN
+		bConnectToAlicatDiff1 := FALSE;
+	ELSIF AlicatDiff_1.P_bError THEN
+		bConnectToAlicatDiff1 := FALSE;
+		AlicatDiff_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bGetAlicatDataDiff1 THEN
+	bGetAlicatDataSuccessfulDiff1 := AlicatDiff_1.M_GetAlicatDiffData();
+	IF bGetAlicatDataSuccessfulDiff1 THEN
+		bGetAlicatDataDiff1 := FALSE;
+	ELSIF AlicatDiff_1.P_bError THEN
+		bGetAlicatDataDiff1 := FALSE;
+		AlicatDiff_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bDisconnectFromAlicatDiff1 THEN
+	bRes_AlicatDiffDisConnected1 := AlicatDiff_1.M_Disconnect();
+	IF bRes_AlicatDiffDisConnected1 THEN
+		bDisconnectFromAlicatDiff1 := FALSE;
+	ELSIF AlicatDiff_1.P_bError THEN
+		bDisconnectFromAlicatDiff1 := FALSE;
+		AlicatDiff_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bGetPressureDiff1 THEN
+	bGetPressureSuccessfulDiff1 := AlicatDiff_1.M_GetPressure(_out_lrealPressure=>AlicatDiffPressure);
+	IF bGetPressureSuccessfulDiff1 THEN
+		bGetPressureDiff1 := FALSE;
+	ELSIF AlicatDiff_1.P_bError THEN
+		bGetPressureDiff1 := FALSE;
+		AlicatDiff_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bLockDisplayDiff1 THEN
+	bLockDisplaySuccessfulDiff1 := AlicatDiff_1.M_LockDisplay();
+	IF bLockDisplaySuccessfulDiff1 THEN
+		bLockDisplayDiff1 := FALSE;
+	ELSIF AlicatDiff_1.P_bError THEN
+		bLockDisplayDiff1 := FALSE;
+		AlicatDiff_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bUnlockDisplayDiff1 THEN
+	bUnlockDisplaySuccessfulDiff1 := AlicatDiff_1.M_UnlockDisplay();
+	IF bUnlockDisplaySuccessfulDiff1 THEN
+		bUnlockDisplayDiff1 := FALSE;
+	ELSIF AlicatDiff_1.P_bError THEN
+		bUnlockDisplayDiff1 := FALSE;
+		AlicatDiff_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bConnectToAgilentVac THEN
+	bRes_AgilentVacConnected := AgilentVacuum_1.M_Connect();
+	IF 	bRes_AgilentVacConnected THEN
+		bConnectToAgilentVac := FALSE;
+	ELSIF AgilentVacuum_1.P_bError THEN
+		bConnectToAgilentVac := FALSE;
+		AgilentVacuum_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bGetPressureAgilent THEN
+	bGetPressureSuccessfulAgilent := AgilentVacuum_1.M_GetPressure(_out_lrealPressure=>AgilentPressure);
+	IF bGetPressureSuccessfulAgilent THEN
+		bGetPressureAgilent := FALSE;
+	ELSIF AgilentVacuum_1.P_bError THEN
+		bGetPressureAgilent := FALSE;
+		AgilentVacuum_1.M_ClearError();
+	END_IF
+END_IF
+
+IF bDisconnectFromAgilent THEN
+	bRes_AgilentDisConnected := AgilentVacuum_1.M_Disconnect();
+	IF bRes_AgilentDisConnected THEN
+		bDisconnectFromAgilent := FALSE;
+	ELSIF AgilentVacuum_1.P_bError THEN
+		bDisconnectFromAgilent := FALSE;
+		AgilentVacuum_1.M_ClearError();
 	END_IF
 END_IF
 
 
-//IF bConnectToLaserMarker THEN
-//	bRes_LaserConnected := MyLaser1.M_Connect();
-//	IF bRes_LaserConnected THEN
-//	//Add some timer based logic to do error handling.
-//		bConnectToLaserMarker := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bConnectToLaserMarker := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
 
-//IF bDisconnectFromLaserMarker THEN
-//	bRes_LaserDisconnected := MyLaser1.M_Disconnect();
-//	IF bRes_LaserDisconnected THEN
-//		bDisconnectFromLaserMarker := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bDisconnectFromLaserMarker := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
 
-//IF bPeakCurrentProgramInLaser THEN
-//	bRes_PeakCurrentProgramInLaser := MyLaser1.M_PeakCurrentProgram();
-//	IF bRes_PeakCurrentProgramInLaser THEN
-//		bPeakCurrentProgramInLaser := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bPeakCurrentProgramInLaser := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
 
-//IF bSendProgramToLaser THEN
-//	bRes_SendProgramtoLaser := MyLaser1.M_SendProgramtoLaser(filepath,LaserMemoryLocation);
-//	IF bRes_SendProgramtoLaser THEN
-//		bSendProgramToLaser := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bSendProgramToLaser := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
-//IF bSaveCurrentLaserProgramtoPC THEN
-//	bRes_SaveCurrentLaserProgramtoPC := MyLaser1.M_SaveCurrentLaserProgramtoPC(LaserProgramFolderPath, out_bool_SaveProgramToPC_Success => SaveCurrentLaserProgramToPCSuccess);
-//	IF bRes_SaveCurrentLaserProgramtoPC THEN
-////		SaveCurrentLaserProgramToPCSuccess := MyLaser1
-//		bSaveCurrentLaserProgramtoPC := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bSaveCurrentLaserProgramtoPC := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
-//IF bStartMarking THEN
-//	bRes_StartMarking := MyLaser1.M_StartMarking();
-//	IF bRes_StartMarking THEN
-//		bStartMarking := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bStartMarking := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
-//IF bStopMarking THEN
-//	bRes_StopMarking := MyLaser1.M_StopMarking();
-//	IF bRes_StopMarking THEN
-//		bStopMarking := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bStopMarking := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
-//IF bClearLaserErrors THEN
-//	bRes_ClearLaserErrors := MyLaser1.M_ClearLaserErrors();
-//	IF bRes_ClearLaserErrors THEN
-//		bClearLaserErrors := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bClearLaserErrors := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
 
-//IF bResetErrors THEN
-//	bRes_Reset := MyLaser1.M_Reset();
-//	IF bRes_Reset THEN
-//		bResetErrors := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bResetErrors := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
-
-//IF bUpdateProgramBlockInTheLaser THEN
-//	bRes_UpdateProgramBlockInTheLaser := MyLaser1.M_UpdateSingleProgramBlockData(LaserMemoryLocation, _blockNumber, _blockData, _blockType, out_bool_UpdateData_Success => _bUpdateSingleBlockDataSuccess);
-//	IF bRes_UpdateProgramBlockInTheLaser THEN
-//		bUpdateProgramBlockInTheLaser := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bUpdateProgramBlockInTheLaser := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
-
-//IF bUpdateProgramBlockMarkEnabledInTheLaser THEN
-//	bRes_UpdateProgramBlockMarkEnabledInTheLaser := MyLaser1.M_UpdateSingleProgramBlockMarkEnabled( LaserProgramMemoryLocation := LaserMemoryLocation, BlockNumber := _blockNumber, BlockType := _blockType ,MarkEnabled := _markenabled, out_bool_MarkEnabled_Success => _bUpdateSingleBlockMarkEnabled_Success);
-//	IF bRes_UpdateProgramBlockMarkEnabledInTheLaser THEN
-//		bUpdateProgramBlockMarkEnabledInTheLaser := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bUpdateProgramBlockMarkEnabledInTheLaser := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
-
-//IF bGetLaserStatus THEN
-//	bRes_GetLaserStatus := MyLaser1.M_GetLaserStatus( _out_string_laserStatus => _string_laserstatus);
-//	IF bRes_GetLaserStatus THEN
-//		bGetLaserStatus := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bGetLaserStatus := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
-
-//IF bGetLaserErrorStatus THEN
-//	bRes_GetLaserErrorStatus := MyLaser1.M_GetLaserErrorStatus( out_bool_IsLaserError => _bIsLaserError);
-//	IF bRes_GetLaserErrorStatus THEN
-//		bGetLaserErrorStatus := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bGetLaserErrorStatus := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
-
-//IF bGetLaserActivatedStatus THEN
-//	bRes_GetLaserActivatedStatus := MyLaser1.M_GetLaserActivatedStatus( out_IsLaserActivated => _bIsLaserActivated);
-//	IF bRes_GetLaserActivatedStatus THEN
-//		bGetLaserActivatedStatus := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bGetLaserActivatedStatus := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF
-
-//IF bGetLaserMarkingStatus THEN
-//	bRes_GetLaserMarkingStatus := MyLaser1.M_GetLaserMarkingStatus( out_bool_IsLaserMarking => _bIsLaserMarking);
-//	IF bRes_GetLaserMarkingStatus THEN
-//		bGetLaserMarkingStatus := FALSE;
-//	ELSIF MyLaser1.P_bError THEN
-//		bGetLaserMarkingStatus := FALSE;
-//		MyLaser1.M_ClearError();
-//	END_IF
-//END_IF]]></ST>
+]]></ST>
     </Implementation>
     <Action Name="A_Machine" Id="{f2ef6f5c-8a40-4c62-8311-b3186050d362}">
       <Implementation>
@@ -293,11 +376,11 @@ END_IF
                       <o>
                         <v n="BoxType">"Sensata_Utilities.FB_AdsCommandRouter"</v>
                         <o n="Instance" t="Operand">
-                          <v n="Operand">"FB_AdsDeviceAPI_0"</v>
+                          <v n="Operand">"FB_AdsDeviceAPI_1"</v>
                           <v n="Type">"FB_AdsCommandRouter"</v>
                           <v n="Comment">""</v>
                           <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
+                          <v n="Address">""</v>
                           <o n="Flags" t="Flags">
                             <v n="Flags">0</v>
                             <v n="Fixed">false</v>
@@ -306,7 +389,7 @@ END_IF
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">85L</v>
+                          <v n="Id">153L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
                           <l2 n="OutputItems">
@@ -341,8 +424,8 @@ END_IF
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'ADS_1'"</v>
-                              <v n="Type">"STRING(INT#5)"</v>
+                              <v n="Operand">"'AlicatFlow1Client'"</v>
+                              <v n="Type">"STRING(INT#17)"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">"Constant_Address_Serialization_Value"</v>
@@ -357,6 +440,25 @@ END_IF
                               <v n="Id">90L</v>
                             </o>
                             <v n="Id">89L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"FALSE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">true</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">156L</v>
+                            </o>
+                            <v n="Id">155L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
@@ -379,7 +481,7 @@ END_IF
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"25001"</v>
+                              <v n="Operand">"30000"</v>
                               <v n="Type">"INT"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
@@ -401,12 +503,14 @@ END_IF
                           <l2 n="Names" cet="String">
                             <v>EN</v>
                             <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
                             <v>in_strNetId</v>
                             <v>in_uintPort</v>
                           </l2>
                           <l2 n="Types" cet="String">
                             <v>BOOL</v>
                             <v>T_MaxString</v>
+                            <v>BOOL</v>
                             <v>T_AmsNetId</v>
                             <v>T_AmsPort</v>
                           </l2>
@@ -425,7 +529,7 @@ END_IF
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">86L</v>
+                        <v n="Id">154L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
@@ -440,7 +544,338 @@ END_IF
                     <v n="Title">""</v>
                     <v n="Label">""</v>
                     <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" />
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"Sensata_Utilities.FB_AdsCommandRouter"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"FB_AdsDeviceAPI_2"</v>
+                          <v n="Type">"FB_AdsCommandRouter"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">147L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems">
+                            <n />
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">true</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">true</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">true</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">139L</v>
+                            </o>
+                            <v n="Id">138L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"'AlicatFlow2Client'"</v>
+                              <v n="Type">"STRING(INT#17)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">144L</v>
+                            </o>
+                            <v n="Id">143L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"FALSE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">146L</v>
+                            </o>
+                            <v n="Id">145L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"''"</v>
+                              <v n="Type">"STRING(INT#0)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">150L</v>
+                            </o>
+                            <v n="Id">149L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"30000"</v>
+                              <v n="Type">"INT"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">152L</v>
+                            </o>
+                            <v n="Id">151L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>EN</v>
+                            <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
+                            <v>in_strNetId</v>
+                            <v>in_uintPort</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>T_MaxString</v>
+                            <v>BOOL</v>
+                            <v>T_AmsNetId</v>
+                            <v>T_AmsPort</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>ENO</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                          </l2>
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">true</v>
+                        <v n="ENO">true</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">148L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">137L</v>
+                  </o>
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"Sensata_Utilities.FB_AdsCommandRouter"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"FB_AdsDeviceAPI_3"</v>
+                          <v n="Type">"FB_AdsCommandRouter"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">166L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems">
+                            <n />
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">true</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">true</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">true</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">158L</v>
+                            </o>
+                            <v n="Id">157L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"'AlicatFlow3Client'"</v>
+                              <v n="Type">"STRING(INT#17)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">163L</v>
+                            </o>
+                            <v n="Id">162L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"FALSE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">165L</v>
+                            </o>
+                            <v n="Id">164L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"''"</v>
+                              <v n="Type">"STRING(INT#0)"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">169L</v>
+                            </o>
+                            <v n="Id">168L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"30000"</v>
+                              <v n="Type">"INT"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">171L</v>
+                            </o>
+                            <v n="Id">170L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>EN</v>
+                            <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
+                            <v>in_strNetId</v>
+                            <v>in_uintPort</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>T_MaxString</v>
+                            <v>BOOL</v>
+                            <v>T_AmsNetId</v>
+                            <v>T_AmsPort</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>ENO</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                          </l2>
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">true</v>
+                        <v n="ENO">true</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">167L</v>
+                      </o>
+                    </l2>
                     <l2 n="Connectors" />
                     <v n="Id">83L</v>
                   </o>
@@ -455,10 +890,10 @@ END_IF
                     <v n="OutCommented">false</v>
                     <l2 n="NetworkItems" cet="BoxTreeBox">
                       <o>
-                        <v n="BoxType">"FB_AbsolutePressureTransducer"</v>
+                        <v n="BoxType">"FB_AlicatFlowMeter"</v>
                         <o n="Instance" t="Operand">
-                          <v n="Operand">"AlicatAbsolutePressureTransducer_1"</v>
-                          <v n="Type">"FB_AbsolutePressureTransducer"</v>
+                          <v n="Operand">"AlicatFlowMeter_1"</v>
+                          <v n="Type">"FB_AlicatFlowMeter"</v>
                           <v n="Comment">""</v>
                           <v n="SymbolComment">""</v>
                           <v n="Address">""</v>
@@ -470,7 +905,7 @@ END_IF
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">99L</v>
+                          <v n="Id">107L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
                           <l2 n="OutputItems">
@@ -505,8 +940,8 @@ END_IF
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'AlicatAbs_1'"</v>
-                              <v n="Type">"STRING(INT#11)"</v>
+                              <v n="Operand">"'AlicatFlowMeter_1'"</v>
+                              <v n="Type">"STRING(INT#17)"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">"Constant_Address_Serialization_Value"</v>
@@ -524,8 +959,8 @@ END_IF
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"FB_AdsDeviceAPI_0"</v>
-                              <v n="Type">"FB_AdsCommandRouter"</v>
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">"Constant_Address_Serialization_Value"</v>
@@ -541,16 +976,37 @@ END_IF
                             </o>
                             <v n="Id">73L</v>
                           </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"FB_AdsDeviceAPI_1"</v>
+                              <v n="Type">"FB_AdsCommandRouter"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">104L</v>
+                            </o>
+                            <v n="Id">103L</v>
+                          </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
                           <l2 n="Names" cet="String">
                             <v>EN</v>
                             <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
                             <v>in_fbApi</v>
                           </l2>
                           <l2 n="Types" cet="String">
                             <v>BOOL</v>
                             <v>T_MaxString</v>
+                            <v>BOOL</v>
                             <v>REFERENCE TO FB_CommandRouter</v>
                           </l2>
                         </o>
@@ -568,45 +1024,12 @@ END_IF
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">100L</v>
+                        <v n="Id">108L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
                     <v n="Id">65L</v>
                   </o>
-                </l2>
-                <v n="BranchCounter">0</v>
-                <v n="ValidIds">true</v>
-              </o>
-            </Data>
-            <TypeList>
-              <Type n="Boolean">System.Boolean</Type>
-              <Type n="BoxTreeBox">{acfc6f68-8e3a-4af5-bf81-3dd512095a46}</Type>
-              <Type n="BoxTreeOperand">{9de7f100-1b87-424c-a62e-45b0cfc85ed2}</Type>
-              <Type n="Flags">{668066f2-6069-46b3-8962-8db8d13d7db2}</Type>
-              <Type n="Int32">System.Int32</Type>
-              <Type n="Int64">System.Int64</Type>
-              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
-              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
-              <Type n="Operand">{c9b2f165-48a2-4a45-8326-3952d8a3d708}</Type>
-              <Type n="Operator">{bffb3c53-f105-4e85-aba2-e30df579d75f}</Type>
-              <Type n="OutputItemList">{f40d3e09-c02c-4522-a88c-dac23558cfc4}</Type>
-              <Type n="ParamList">{71496971-9e0c-4677-a832-b9583b571130}</Type>
-              <Type n="String">System.String</Type>
-            </TypeList>
-          </XmlArchive>
-        </NWL>
-      </Implementation>
-    </Action>
-    <Action Name="A_Station1" Id="{504119fa-b0a8-489a-9a37-499472501127}">
-      <Implementation>
-        <NWL>
-          <XmlArchive>
-            <Data>
-              <o xml:space="preserve" t="NWLImplementationObject">
-                <v n="NetworkListComment">""</v>
-                <v n="DefaultViewMode">"Ld"</v>
-                <l2 n="NetworkList" cet="Network">
                   <o>
                     <v n="ILActive">false</v>
                     <v n="FBDValid">false</v>
@@ -618,13 +1041,13 @@ END_IF
                     <v n="OutCommented">false</v>
                     <l2 n="NetworkItems" cet="BoxTreeBox">
                       <o>
-                        <v n="BoxType">"FB_ExampleDevice"</v>
+                        <v n="BoxType">"FB_AlicatAbsolute"</v>
                         <o n="Instance" t="Operand">
-                          <v n="Operand">"fbDevice1"</v>
-                          <v n="Type">"FB_ExampleDevice"</v>
+                          <v n="Operand">"AlicatAbs_1"</v>
+                          <v n="Type">"FB_AlicatAbsolute"</v>
                           <v n="Comment">""</v>
                           <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
+                          <v n="Address">""</v>
                           <o n="Flags" t="Flags">
                             <v n="Flags">0</v>
                             <v n="Fixed">false</v>
@@ -633,7 +1056,7 @@ END_IF
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">27L</v>
+                          <v n="Id">119L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
                           <l2 n="OutputItems">
@@ -653,26 +1076,26 @@ END_IF
                               <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
+                                <v n="Fixed">true</v>
                                 <v n="Extensible">false</v>
                               </o>
                               <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
+                              <v n="Boolean">true</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">22L</v>
+                              <v n="Id">111L</v>
                             </o>
-                            <v n="Id">21L</v>
+                            <v n="Id">110L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'Device 1'"</v>
-                              <v n="Type">"STRING(INT#8)"</v>
+                              <v n="Operand">"'AlicatAbs_1'"</v>
+                              <v n="Type">"STRING(INT#11)"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -681,19 +1104,61 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">24L</v>
+                              <v n="Id">116L</v>
                             </o>
-                            <v n="Id">23L</v>
+                            <v n="Id">115L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">118L</v>
+                            </o>
+                            <v n="Id">117L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"FB_AdsDeviceAPI_1"</v>
+                              <v n="Type">"FB_AdsCommandRouter"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">122L</v>
+                            </o>
+                            <v n="Id">121L</v>
                           </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
                           <l2 n="Names" cet="String">
                             <v>EN</v>
                             <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
+                            <v>in_fbApi</v>
                           </l2>
                           <l2 n="Types" cet="String">
                             <v>BOOL</v>
                             <v>T_MaxString</v>
+                            <v>BOOL</v>
+                            <v>REFERENCE TO FB_CommandRouter</v>
                           </l2>
                         </o>
                         <o n="OutputParam" t="ParamList">
@@ -710,11 +1175,11 @@ END_IF
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">28L</v>
+                        <v n="Id">120L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
-                    <v n="Id">17L</v>
+                    <v n="Id">109L</v>
                   </o>
                   <o>
                     <v n="ILActive">false</v>
@@ -727,13 +1192,13 @@ END_IF
                     <v n="OutCommented">false</v>
                     <l2 n="NetworkItems" cet="BoxTreeBox">
                       <o>
-                        <v n="BoxType">"FB_ExampleStation"</v>
+                        <v n="BoxType">"FB_AlicatDifferential"</v>
                         <o n="Instance" t="Operand">
-                          <v n="Operand">"fbStation1"</v>
-                          <v n="Type">"FB_ExampleStation"</v>
+                          <v n="Operand">"AlicatDiff_1"</v>
+                          <v n="Type">"FB_AlicatDifferential"</v>
                           <v n="Comment">""</v>
                           <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
+                          <v n="Address">""</v>
                           <o n="Flags" t="Flags">
                             <v n="Flags">0</v>
                             <v n="Fixed">false</v>
@@ -742,7 +1207,7 @@ END_IF
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">40L</v>
+                          <v n="Id">133L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
                           <l2 n="OutputItems">
@@ -762,26 +1227,26 @@ END_IF
                               <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
+                                <v n="Fixed">true</v>
                                 <v n="Extensible">false</v>
                               </o>
                               <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
+                              <v n="Boolean">true</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">6L</v>
+                              <v n="Id">125L</v>
                             </o>
-                            <v n="Id">5L</v>
+                            <v n="Id">124L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'Station 1'"</v>
-                              <v n="Type">"STRING(INT#9)"</v>
+                              <v n="Operand">"'AlicatDiff_1'"</v>
+                              <v n="Type">"STRING(INT#12)"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -790,142 +1255,17 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">8L</v>
+                              <v n="Id">130L</v>
                             </o>
-                            <v n="Id">7L</v>
+                            <v n="Id">129L</v>
                           </o>
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"fbDevice1"</v>
-                              <v n="Type">"FB_ExampleDevice"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">16L</v>
-                            </o>
-                            <v n="Id">15L</v>
-                          </o>
-                        </l2>
-                        <o n="InputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>EN</v>
-                            <v>in_strUniqueId</v>
-                            <v>in_fbDevice</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                            <v>T_MaxString</v>
-                            <v>REFERENCE TO FB_Device</v>
-                          </l2>
-                        </o>
-                        <o n="OutputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>ENO</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                          </l2>
-                        </o>
-                        <v n="CallType" t="Operator">FunctionBlock</v>
-                        <v n="EN">true</v>
-                        <v n="ENO">true</v>
-                        <n n="STSnippet" />
-                        <v n="ContainsExtensibleInputs">false</v>
-                        <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">41L</v>
-                      </o>
-                    </l2>
-                    <l2 n="Connectors" />
-                    <v n="Id">1L</v>
-                  </o>
-                </l2>
-                <v n="BranchCounter">0</v>
-                <v n="ValidIds">true</v>
-              </o>
-            </Data>
-            <TypeList>
-              <Type n="Boolean">System.Boolean</Type>
-              <Type n="BoxTreeBox">{acfc6f68-8e3a-4af5-bf81-3dd512095a46}</Type>
-              <Type n="BoxTreeOperand">{9de7f100-1b87-424c-a62e-45b0cfc85ed2}</Type>
-              <Type n="Flags">{668066f2-6069-46b3-8962-8db8d13d7db2}</Type>
-              <Type n="Int32">System.Int32</Type>
-              <Type n="Int64">System.Int64</Type>
-              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
-              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
-              <Type n="Operand">{c9b2f165-48a2-4a45-8326-3952d8a3d708}</Type>
-              <Type n="Operator">{bffb3c53-f105-4e85-aba2-e30df579d75f}</Type>
-              <Type n="OutputItemList">{f40d3e09-c02c-4522-a88c-dac23558cfc4}</Type>
-              <Type n="ParamList">{71496971-9e0c-4677-a832-b9583b571130}</Type>
-              <Type n="String">System.String</Type>
-            </TypeList>
-          </XmlArchive>
-        </NWL>
-      </Implementation>
-    </Action>
-    <Action Name="A_Station2" Id="{21ea2e05-12d0-4cac-a384-2d35f55a53ab}">
-      <Implementation>
-        <NWL>
-          <XmlArchive>
-            <Data>
-              <o xml:space="preserve" t="NWLImplementationObject">
-                <v n="NetworkListComment">""</v>
-                <v n="DefaultViewMode">"Ld"</v>
-                <l2 n="NetworkList" cet="Network">
-                  <o>
-                    <v n="ILActive">false</v>
-                    <v n="FBDValid">false</v>
-                    <v n="ILValid">false</v>
-                    <l2 n="ILLines" />
-                    <v n="Comment">""</v>
-                    <v n="Title">""</v>
-                    <v n="Label">""</v>
-                    <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" cet="BoxTreeBox">
-                      <o>
-                        <v n="BoxType">"FB_ExampleDevice"</v>
-                        <o n="Instance" t="Operand">
-                          <v n="Operand">"fbDevice2"</v>
-                          <v n="Type">"FB_ExampleDevice"</v>
-                          <v n="Comment">""</v>
-                          <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
-                          <o n="Flags" t="Flags">
-                            <v n="Flags">0</v>
-                            <v n="Fixed">false</v>
-                            <v n="Extensible">false</v>
-                          </o>
-                          <v n="LValue">false</v>
-                          <v n="Boolean">false</v>
-                          <v n="IsInstance">true</v>
-                          <v n="Id">18L</v>
-                        </o>
-                        <o n="OutputItems" t="OutputItemList">
-                          <l2 n="OutputItems">
-                            <n />
-                          </l2>
-                        </o>
-                        <o n="Flags" t="Flags">
-                          <v n="Flags">0</v>
-                          <v n="Fixed">true</v>
-                          <v n="Extensible">false</v>
-                        </o>
-                        <n n="InputFlags" />
-                        <l2 n="InputItems" cet="BoxTreeOperand">
                           <o>
                             <o n="Operand" t="Operand">
                               <v n="Operand">"TRUE"</v>
                               <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -934,17 +1274,17 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">21L</v>
+                              <v n="Id">132L</v>
                             </o>
-                            <v n="Id">20L</v>
+                            <v n="Id">131L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'Device 2'"</v>
-                              <v n="Type">"STRING(INT#8)"</v>
+                              <v n="Operand">"FB_AdsDeviceAPI_1"</v>
+                              <v n="Type">"FB_AdsCommandRouter"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -953,19 +1293,23 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">23L</v>
+                              <v n="Id">136L</v>
                             </o>
-                            <v n="Id">22L</v>
+                            <v n="Id">135L</v>
                           </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
                           <l2 n="Names" cet="String">
                             <v>EN</v>
                             <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
+                            <v>in_fbApi</v>
                           </l2>
                           <l2 n="Types" cet="String">
                             <v>BOOL</v>
                             <v>T_MaxString</v>
+                            <v>BOOL</v>
+                            <v>REFERENCE TO FB_CommandRouter</v>
                           </l2>
                         </o>
                         <o n="OutputParam" t="ParamList">
@@ -982,11 +1326,11 @@ END_IF
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">19L</v>
+                        <v n="Id">134L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
-                    <v n="Id">17L</v>
+                    <v n="Id">123L</v>
                   </o>
                   <o>
                     <v n="ILActive">false</v>
@@ -999,13 +1343,13 @@ END_IF
                     <v n="OutCommented">false</v>
                     <l2 n="NetworkItems" cet="BoxTreeBox">
                       <o>
-                        <v n="BoxType">"FB_ExampleStation"</v>
+                        <v n="BoxType">"FB_AgilentVacuumGauge"</v>
                         <o n="Instance" t="Operand">
-                          <v n="Operand">"fbStation2"</v>
-                          <v n="Type">"FB_ExampleStation"</v>
+                          <v n="Operand">"AgilentVacuum_1"</v>
+                          <v n="Type">"FB_AgilentVacuumGauge"</v>
                           <v n="Comment">""</v>
                           <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
+                          <v n="Address">""</v>
                           <o n="Flags" t="Flags">
                             <v n="Flags">0</v>
                             <v n="Fixed">false</v>
@@ -1014,7 +1358,7 @@ END_IF
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">13L</v>
+                          <v n="Id">182L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
                           <l2 n="OutputItems">
@@ -1034,26 +1378,26 @@ END_IF
                               <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
+                                <v n="Fixed">true</v>
                                 <v n="Extensible">false</v>
                               </o>
                               <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
+                              <v n="Boolean">true</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">6L</v>
+                              <v n="Id">174L</v>
                             </o>
-                            <v n="Id">5L</v>
+                            <v n="Id">173L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'Station 2'"</v>
-                              <v n="Type">"STRING(INT#9)"</v>
+                              <v n="Operand">"'AgilentVacuum_1'"</v>
+                              <v n="Type">"STRING(INT#15)"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -1062,142 +1406,17 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">8L</v>
+                              <v n="Id">179L</v>
                             </o>
-                            <v n="Id">7L</v>
+                            <v n="Id">178L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"fbDevice2"</v>
-                              <v n="Type">"FB_ExampleDevice"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">16L</v>
-                            </o>
-                            <v n="Id">15L</v>
-                          </o>
-                        </l2>
-                        <o n="InputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>EN</v>
-                            <v>in_strUniqueId</v>
-                            <v>in_fbDevice</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                            <v>T_MaxString</v>
-                            <v>FB_Device</v>
-                          </l2>
-                        </o>
-                        <o n="OutputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>ENO</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                          </l2>
-                        </o>
-                        <v n="CallType" t="Operator">FunctionBlock</v>
-                        <v n="EN">true</v>
-                        <v n="ENO">true</v>
-                        <n n="STSnippet" />
-                        <v n="ContainsExtensibleInputs">false</v>
-                        <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">14L</v>
-                      </o>
-                    </l2>
-                    <l2 n="Connectors" />
-                    <v n="Id">1L</v>
-                  </o>
-                </l2>
-                <v n="BranchCounter">0</v>
-                <v n="ValidIds">true</v>
-              </o>
-            </Data>
-            <TypeList>
-              <Type n="Boolean">System.Boolean</Type>
-              <Type n="BoxTreeBox">{acfc6f68-8e3a-4af5-bf81-3dd512095a46}</Type>
-              <Type n="BoxTreeOperand">{9de7f100-1b87-424c-a62e-45b0cfc85ed2}</Type>
-              <Type n="Flags">{668066f2-6069-46b3-8962-8db8d13d7db2}</Type>
-              <Type n="Int32">System.Int32</Type>
-              <Type n="Int64">System.Int64</Type>
-              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
-              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
-              <Type n="Operand">{c9b2f165-48a2-4a45-8326-3952d8a3d708}</Type>
-              <Type n="Operator">{bffb3c53-f105-4e85-aba2-e30df579d75f}</Type>
-              <Type n="OutputItemList">{f40d3e09-c02c-4522-a88c-dac23558cfc4}</Type>
-              <Type n="ParamList">{71496971-9e0c-4677-a832-b9583b571130}</Type>
-              <Type n="String">System.String</Type>
-            </TypeList>
-          </XmlArchive>
-        </NWL>
-      </Implementation>
-    </Action>
-    <Action Name="A_Station3" Id="{a8c1dd1b-134a-4dcf-b99f-4a08bcf13697}">
-      <Implementation>
-        <NWL>
-          <XmlArchive>
-            <Data>
-              <o xml:space="preserve" t="NWLImplementationObject">
-                <v n="NetworkListComment">""</v>
-                <v n="DefaultViewMode">"Ld"</v>
-                <l2 n="NetworkList" cet="Network">
-                  <o>
-                    <v n="ILActive">false</v>
-                    <v n="FBDValid">false</v>
-                    <v n="ILValid">false</v>
-                    <l2 n="ILLines" />
-                    <v n="Comment">""</v>
-                    <v n="Title">""</v>
-                    <v n="Label">""</v>
-                    <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" cet="BoxTreeBox">
-                      <o>
-                        <v n="BoxType">"FB_ExampleDevice"</v>
-                        <o n="Instance" t="Operand">
-                          <v n="Operand">"fbDevice3"</v>
-                          <v n="Type">"FB_ExampleDevice"</v>
-                          <v n="Comment">""</v>
-                          <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
-                          <o n="Flags" t="Flags">
-                            <v n="Flags">0</v>
-                            <v n="Fixed">false</v>
-                            <v n="Extensible">false</v>
-                          </o>
-                          <v n="LValue">false</v>
-                          <v n="Boolean">false</v>
-                          <v n="IsInstance">true</v>
-                          <v n="Id">18L</v>
-                        </o>
-                        <o n="OutputItems" t="OutputItemList">
-                          <l2 n="OutputItems">
-                            <n />
-                          </l2>
-                        </o>
-                        <o n="Flags" t="Flags">
-                          <v n="Flags">0</v>
-                          <v n="Fixed">true</v>
-                          <v n="Extensible">false</v>
-                        </o>
-                        <n n="InputFlags" />
-                        <l2 n="InputItems" cet="BoxTreeOperand">
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"TRUE"</v>
+                              <v n="Operand">"FALSE"</v>
                               <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -1206,17 +1425,17 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">21L</v>
+                              <v n="Id">181L</v>
                             </o>
-                            <v n="Id">20L</v>
+                            <v n="Id">180L</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"'Device 3'"</v>
-                              <v n="Type">"STRING(INT#8)"</v>
+                              <v n="Operand">"FB_AdsDeviceAPI_1"</v>
+                              <v n="Type">"FB_AdsCommandRouter"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
+                              <v n="Address">""</v>
                               <o n="Flags" t="Flags">
                                 <v n="Flags">0</v>
                                 <v n="Fixed">false</v>
@@ -1225,19 +1444,23 @@ END_IF
                               <v n="LValue">false</v>
                               <v n="Boolean">false</v>
                               <v n="IsInstance">false</v>
-                              <v n="Id">23L</v>
+                              <v n="Id">185L</v>
                             </o>
-                            <v n="Id">22L</v>
+                            <v n="Id">184L</v>
                           </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
                           <l2 n="Names" cet="String">
                             <v>EN</v>
                             <v>in_strUniqueId</v>
+                            <v>in_bDisableLogging</v>
+                            <v>in_fbApi</v>
                           </l2>
                           <l2 n="Types" cet="String">
                             <v>BOOL</v>
                             <v>T_MaxString</v>
+                            <v>BOOL</v>
+                            <v>REFERENCE TO FB_CommandRouter</v>
                           </l2>
                         </o>
                         <o n="OutputParam" t="ParamList">
@@ -1254,413 +1477,11 @@ END_IF
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">19L</v>
+                        <v n="Id">183L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
-                    <v n="Id">17L</v>
-                  </o>
-                  <o>
-                    <v n="ILActive">false</v>
-                    <v n="FBDValid">false</v>
-                    <v n="ILValid">false</v>
-                    <l2 n="ILLines" />
-                    <v n="Comment">""</v>
-                    <v n="Title">""</v>
-                    <v n="Label">""</v>
-                    <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" cet="BoxTreeBox">
-                      <o>
-                        <v n="BoxType">"FB_ExampleStation"</v>
-                        <o n="Instance" t="Operand">
-                          <v n="Operand">"fbStation3"</v>
-                          <v n="Type">"FB_ExampleStation"</v>
-                          <v n="Comment">""</v>
-                          <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
-                          <o n="Flags" t="Flags">
-                            <v n="Flags">0</v>
-                            <v n="Fixed">false</v>
-                            <v n="Extensible">false</v>
-                          </o>
-                          <v n="LValue">false</v>
-                          <v n="Boolean">false</v>
-                          <v n="IsInstance">true</v>
-                          <v n="Id">13L</v>
-                        </o>
-                        <o n="OutputItems" t="OutputItemList">
-                          <l2 n="OutputItems">
-                            <n />
-                          </l2>
-                        </o>
-                        <o n="Flags" t="Flags">
-                          <v n="Flags">0</v>
-                          <v n="Fixed">true</v>
-                          <v n="Extensible">false</v>
-                        </o>
-                        <n n="InputFlags" />
-                        <l2 n="InputItems" cet="BoxTreeOperand">
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"TRUE"</v>
-                              <v n="Type">"BOOL"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">6L</v>
-                            </o>
-                            <v n="Id">5L</v>
-                          </o>
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"'Station 3'"</v>
-                              <v n="Type">"STRING(INT#9)"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">8L</v>
-                            </o>
-                            <v n="Id">7L</v>
-                          </o>
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"fbDevice3"</v>
-                              <v n="Type">"FB_ExampleDevice"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">16L</v>
-                            </o>
-                            <v n="Id">15L</v>
-                          </o>
-                        </l2>
-                        <o n="InputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>EN</v>
-                            <v>in_strUniqueId</v>
-                            <v>in_fbDevice</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                            <v>T_MaxString</v>
-                            <v>FB_Device</v>
-                          </l2>
-                        </o>
-                        <o n="OutputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>ENO</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                          </l2>
-                        </o>
-                        <v n="CallType" t="Operator">FunctionBlock</v>
-                        <v n="EN">true</v>
-                        <v n="ENO">true</v>
-                        <n n="STSnippet" />
-                        <v n="ContainsExtensibleInputs">false</v>
-                        <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">14L</v>
-                      </o>
-                    </l2>
-                    <l2 n="Connectors" />
-                    <v n="Id">1L</v>
-                  </o>
-                </l2>
-                <v n="BranchCounter">0</v>
-                <v n="ValidIds">true</v>
-              </o>
-            </Data>
-            <TypeList>
-              <Type n="Boolean">System.Boolean</Type>
-              <Type n="BoxTreeBox">{acfc6f68-8e3a-4af5-bf81-3dd512095a46}</Type>
-              <Type n="BoxTreeOperand">{9de7f100-1b87-424c-a62e-45b0cfc85ed2}</Type>
-              <Type n="Flags">{668066f2-6069-46b3-8962-8db8d13d7db2}</Type>
-              <Type n="Int32">System.Int32</Type>
-              <Type n="Int64">System.Int64</Type>
-              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
-              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
-              <Type n="Operand">{c9b2f165-48a2-4a45-8326-3952d8a3d708}</Type>
-              <Type n="Operator">{bffb3c53-f105-4e85-aba2-e30df579d75f}</Type>
-              <Type n="OutputItemList">{f40d3e09-c02c-4522-a88c-dac23558cfc4}</Type>
-              <Type n="ParamList">{71496971-9e0c-4677-a832-b9583b571130}</Type>
-              <Type n="String">System.String</Type>
-            </TypeList>
-          </XmlArchive>
-        </NWL>
-      </Implementation>
-    </Action>
-    <Action Name="A_Station4" Id="{f4929fa8-ed63-4a91-b73a-b4250062275b}">
-      <Implementation>
-        <NWL>
-          <XmlArchive>
-            <Data>
-              <o xml:space="preserve" t="NWLImplementationObject">
-                <v n="NetworkListComment">""</v>
-                <v n="DefaultViewMode">"Ld"</v>
-                <l2 n="NetworkList" cet="Network">
-                  <o>
-                    <v n="ILActive">false</v>
-                    <v n="FBDValid">false</v>
-                    <v n="ILValid">false</v>
-                    <l2 n="ILLines" />
-                    <v n="Comment">""</v>
-                    <v n="Title">""</v>
-                    <v n="Label">""</v>
-                    <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" cet="BoxTreeBox">
-                      <o>
-                        <v n="BoxType">"FB_ExampleDevice"</v>
-                        <o n="Instance" t="Operand">
-                          <v n="Operand">"fbDevice4"</v>
-                          <v n="Type">"FB_ExampleDevice"</v>
-                          <v n="Comment">""</v>
-                          <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
-                          <o n="Flags" t="Flags">
-                            <v n="Flags">0</v>
-                            <v n="Fixed">false</v>
-                            <v n="Extensible">false</v>
-                          </o>
-                          <v n="LValue">false</v>
-                          <v n="Boolean">false</v>
-                          <v n="IsInstance">true</v>
-                          <v n="Id">18L</v>
-                        </o>
-                        <o n="OutputItems" t="OutputItemList">
-                          <l2 n="OutputItems">
-                            <n />
-                          </l2>
-                        </o>
-                        <o n="Flags" t="Flags">
-                          <v n="Flags">0</v>
-                          <v n="Fixed">true</v>
-                          <v n="Extensible">false</v>
-                        </o>
-                        <n n="InputFlags" />
-                        <l2 n="InputItems" cet="BoxTreeOperand">
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"TRUE"</v>
-                              <v n="Type">"BOOL"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">21L</v>
-                            </o>
-                            <v n="Id">20L</v>
-                          </o>
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"'Device 4'"</v>
-                              <v n="Type">"STRING(INT#8)"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">23L</v>
-                            </o>
-                            <v n="Id">22L</v>
-                          </o>
-                        </l2>
-                        <o n="InputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>EN</v>
-                            <v>in_strUniqueId</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                            <v>T_MaxString</v>
-                          </l2>
-                        </o>
-                        <o n="OutputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>ENO</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                          </l2>
-                        </o>
-                        <v n="CallType" t="Operator">FunctionBlock</v>
-                        <v n="EN">true</v>
-                        <v n="ENO">true</v>
-                        <n n="STSnippet" />
-                        <v n="ContainsExtensibleInputs">false</v>
-                        <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">19L</v>
-                      </o>
-                    </l2>
-                    <l2 n="Connectors" />
-                    <v n="Id">17L</v>
-                  </o>
-                  <o>
-                    <v n="ILActive">false</v>
-                    <v n="FBDValid">false</v>
-                    <v n="ILValid">false</v>
-                    <l2 n="ILLines" />
-                    <v n="Comment">""</v>
-                    <v n="Title">""</v>
-                    <v n="Label">""</v>
-                    <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" cet="BoxTreeBox">
-                      <o>
-                        <v n="BoxType">"FB_ExampleStation"</v>
-                        <o n="Instance" t="Operand">
-                          <v n="Operand">"fbStation4"</v>
-                          <v n="Type">"FB_ExampleStation"</v>
-                          <v n="Comment">""</v>
-                          <v n="SymbolComment">""</v>
-                          <v n="Address">"Constant_Address_Serialization_Value"</v>
-                          <o n="Flags" t="Flags">
-                            <v n="Flags">0</v>
-                            <v n="Fixed">false</v>
-                            <v n="Extensible">false</v>
-                          </o>
-                          <v n="LValue">false</v>
-                          <v n="Boolean">false</v>
-                          <v n="IsInstance">true</v>
-                          <v n="Id">13L</v>
-                        </o>
-                        <o n="OutputItems" t="OutputItemList">
-                          <l2 n="OutputItems">
-                            <n />
-                          </l2>
-                        </o>
-                        <o n="Flags" t="Flags">
-                          <v n="Flags">0</v>
-                          <v n="Fixed">true</v>
-                          <v n="Extensible">false</v>
-                        </o>
-                        <n n="InputFlags" />
-                        <l2 n="InputItems" cet="BoxTreeOperand">
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"TRUE"</v>
-                              <v n="Type">"BOOL"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">6L</v>
-                            </o>
-                            <v n="Id">5L</v>
-                          </o>
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"'Station 4'"</v>
-                              <v n="Type">"STRING(INT#9)"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">8L</v>
-                            </o>
-                            <v n="Id">7L</v>
-                          </o>
-                          <o>
-                            <o n="Operand" t="Operand">
-                              <v n="Operand">"fbDevice4"</v>
-                              <v n="Type">"FB_ExampleDevice"</v>
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">"Constant_Address_Serialization_Value"</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">false</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">16L</v>
-                            </o>
-                            <v n="Id">15L</v>
-                          </o>
-                        </l2>
-                        <o n="InputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>EN</v>
-                            <v>in_strUniqueId</v>
-                            <v>in_fbDevice</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                            <v>T_MaxString</v>
-                            <v>FB_Device</v>
-                          </l2>
-                        </o>
-                        <o n="OutputParam" t="ParamList">
-                          <l2 n="Names" cet="String">
-                            <v>ENO</v>
-                          </l2>
-                          <l2 n="Types" cet="String">
-                            <v>BOOL</v>
-                          </l2>
-                        </o>
-                        <v n="CallType" t="Operator">FunctionBlock</v>
-                        <v n="EN">true</v>
-                        <v n="ENO">true</v>
-                        <n n="STSnippet" />
-                        <v n="ContainsExtensibleInputs">false</v>
-                        <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">14L</v>
-                      </o>
-                    </l2>
-                    <l2 n="Connectors" />
-                    <v n="Id">1L</v>
+                    <v n="Id">172L</v>
                   </o>
                 </l2>
                 <v n="BranchCounter">0</v>
@@ -1687,24 +1508,43 @@ END_IF
       </Implementation>
     </Action>
     <LineIds Name="PRG_Main">
-      <LineId Id="1521" Count="13" />
+      <LineId Id="1523" Count="0" />
+      <LineId Id="1924" Count="0" />
+      <LineId Id="1531" Count="1" />
+      <LineId Id="1857" Count="0" />
+      <LineId Id="1534" Count="0" />
       <LineId Id="1536" Count="5" />
+      <LineId Id="1847" Count="1" />
+      <LineId Id="1856" Count="0" />
+      <LineId Id="2341" Count="2" />
+      <LineId Id="1850" Count="5" />
+      <LineId Id="1846" Count="0" />
       <LineId Id="1729" Count="3" />
       <LineId Id="1734" Count="4" />
       <LineId Id="1728" Count="0" />
       <LineId Id="1742" Count="3" />
       <LineId Id="1747" Count="4" />
       <LineId Id="1542" Count="0" />
-      <LineId Id="1766" Count="8" />
-      <LineId Id="1765" Count="0" />
       <LineId Id="1778" Count="0" />
       <LineId Id="1781" Count="7" />
       <LineId Id="1779" Count="0" />
       <LineId Id="1790" Count="8" />
       <LineId Id="1789" Count="0" />
-      <LineId Id="1780" Count="0" />
-      <LineId Id="1543" Count="153" />
-      <LineId Id="585" Count="0" />
+      <LineId Id="1954" Count="0" />
+      <LineId Id="1956" Count="0" />
+      <LineId Id="1983" Count="58" />
+      <LineId Id="1982" Count="0" />
+      <LineId Id="2042" Count="0" />
+      <LineId Id="1957" Count="1" />
+      <LineId Id="2043" Count="57" />
+      <LineId Id="1959" Count="1" />
+      <LineId Id="2201" Count="7" />
+      <LineId Id="1962" Count="0" />
+      <LineId Id="2210" Count="8" />
+      <LineId Id="1963" Count="0" />
+      <LineId Id="2219" Count="8" />
+      <LineId Id="1968" Count="13" />
+      <LineId Id="1953" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
